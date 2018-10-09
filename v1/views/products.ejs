@@ -1,12 +1,13 @@
 <% include partials/header %>
 
 
-<h1>This is the Products pages</h1>
+<h1>This is the Products page</h1>
+<a href="/products/new">Post a New Product</a>
 
 <% products.forEach(function(product){ %>
     <div>
         <h4><%= product.brand %></h4>
-        <h4><%= product.id %></h4>
+        <h4><%= product.productID %></h4>
         <img src="<%= product.image %>">
         
     </div>
