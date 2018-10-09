@@ -16,6 +16,10 @@ app.get("/products", function(req,res){
     res.render("products",{products:products});
 });
 
+app.get("/products/new", function(req, res) {
+    res.render("new.ejs");
+})
+
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("This ShopTime Server Has Started!");
 });
