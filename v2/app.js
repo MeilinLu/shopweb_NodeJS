@@ -3,8 +3,8 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose  = require("mongoose");
 
-//mongoose.connect("mongodb://localhost/shop_time");  
-mongoose.connect('mongodb://localhost:27017/shop_time', { useNewUrlParser: true }); //solve a DeprecationWarning
+mongoose.connect("mongodb://localhost/shop_time");
+
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.set("view engine", "ejs");
@@ -61,7 +61,7 @@ app.get("/products", function(req,res){
 });
 
 app.post("/products",function(req, res){
-    //res.send("Submit Success!");  // testing
+    res.send("Submit Success!");
    // get data from form and add to products array
     var brand = req.body.brand;
     var productID = req.body.productID;
@@ -74,11 +74,11 @@ app.post("/products",function(req, res){
        if(err) {
            console.log(err);
        } else {
-           // redirect back to products page
            res.redirect("/products");
        }
     });
- 
+    // redirect back to products page
+    res.redirect("/products");
 });
 
 
@@ -87,5 +87,5 @@ app.get("/products/new", function(req, res) {
 })
 
 app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("This ShopTime Started V1 !");
+    console.log("This ShopTime Started V2!");
 });
