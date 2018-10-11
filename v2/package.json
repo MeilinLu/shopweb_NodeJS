@@ -1,0 +1,26 @@
+{
+  "name": "v1",
+  "version": "1.0.0",
+  "description": "ShopTime v1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MeilinLu/it310"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MeilinLu/it310/issues"
+  },
+  "homepage": "https://github.com/MeilinLu/it310#readme",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.2"
+  }
+}

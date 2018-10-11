@@ -1,0 +1,40 @@
+<% include partials/header %>
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Jumbotron Header -->
+    <header class="jumbotron">
+        <div class="container"></div>
+            <h1 class="display-3">Welcome to Shop Time !</h1>
+            <p class="lead">This is a shop plate for small business people communication.</p>
+            <a href="/products/new" class="btn btn-primary btn-lg">Post a New Product!</a>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="row">
+            <% products.forEach(function(product){ %>
+                    
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card">
+                       
+                            <img src="<%= product.image %>">
+                            <h4><%= product.brand %></h4>
+                            <h4><%= product.productID %></h4>
+                            <p>
+                                <a href="/products/<%= product._id %>" class="btn btn-primary">Show</a>
+                            </p>
+                     
+                        
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    
+    
+</div>
+<!-- /.container -->
+
+<% include partials/footer %>
