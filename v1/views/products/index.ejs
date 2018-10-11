@@ -1,4 +1,8 @@
-<% include partials/header %>
+<% include ../partials/header %>
+
+
+
+    
 
 <!-- Page Content -->
 <div class="container">
@@ -17,7 +21,7 @@
             <% products.forEach(function(product){ %>
                     
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card">
+                    <div class="thumbnail">
                        
                             <img src="<%= product.image %>">
                             <h4><%= product.brand %></h4>
@@ -37,4 +41,4 @@
 </div>
 <!-- /.container -->
 
-<% include partials/footer %>
+<% include ../partials/footer %>

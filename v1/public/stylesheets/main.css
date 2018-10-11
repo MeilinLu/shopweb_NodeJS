@@ -1,0 +1,16 @@
+body{
+    background: white;
+}
+
+
+.thumbnail img{
+    width: 100%;
+}
+
+.thumbnail{
+    padding: 10px;
+}
+
+.thumbnail .caption-full{
+    padding: 15px;
+}

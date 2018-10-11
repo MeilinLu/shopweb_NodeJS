@@ -2,57 +2,26 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoose  = require("mongoose");
+var Product = require("./models/product");
+var seedDB = require("./seeds");
+var Comment = require("./models/comment");
 
-//mongoose.connect("mongodb://localhost/shop_time");  
-mongoose.connect('mongodb://localhost:27017/shop_time', { useNewUrlParser: true }); //solve a DeprecationWarning
+
+
+seedDB();
+mongoose.connect('mongodb://localhost:27017/shop_time', { useNewUrlParser: true }); //solve a DeprecationWarning //mongoose.connect("mongodb://localhost/shop_time");  
 app.use(bodyParser.urlencoded({extended:true}));
-
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
+
+
 
 app.get("/", function(req, res){
     res.render("landing");
 });
-// SCHEMA SETUP
-var productSchema = new mongoose.Schema({
-    brand: String,
-    productID: String,
-    image: String,
-    description: String
-});
 
-var Product = mongoose.model("Product", productSchema);
-/*
-// testing
-Product.create(
-        {
-            brand:"Coach", 
-            productID:"31208", 
-            image:"https://img1.cohimg.net/is/image/Coach/31208_b4ru_a0?fmt=jpeg&wid=578&hei=727&bgc=240,240,240&qlt=85,0&op_sharpen=1&resMode=bicub&op_usm=0,0,0,0&iccEmbed=0&fit=hfit",
-            description: "crossbody, logo"
-        }, function(err, product){
-            if(err){
-                console.log(err);
-            }else{
-                console.log("New Product Created: ");                    
-                console.log(product);
-            }
-        });
-*/
 
-/* 
-// testing
-var products = [
-        {brand:"Coach", productID:"31208", image:"https://img1.cohimg.net/is/image/Coach/31208_b4ru_a0?fmt=jpeg&wid=578&hei=727&bgc=240,240,240&qlt=85,0&op_sharpen=1&resMode=bicub&op_usm=0,0,0,0&iccEmbed=0&fit=hfit"},
-        {brand:"MK", productID:"30T8SXIL7T", image:"https://michaelkors.scene7.com/is/image/MichaelKors/30T8SXIL7T-1684_1?wid=997&hei=1344&op_sharpen=1&resMode=sharp2&qlt=90"},
-        {brand:"KateSpade", productID:"pxru9257", image:"https://katespade.insnw.net/KateSpade/PXRU9257_242?$rr_large$"},
-        {brand:"Coach", productID:"31208", image:"https://img1.cohimg.net/is/image/Coach/31208_b4ru_a0?fmt=jpeg&wid=578&hei=727&bgc=240,240,240&qlt=85,0&op_sharpen=1&resMode=bicub&op_usm=0,0,0,0&iccEmbed=0&fit=hfit"},
-        {brand:"MK", productID:"30T8SXIL7T", image:"https://michaelkors.scene7.com/is/image/MichaelKors/30T8SXIL7T-1684_1?wid=997&hei=1344&op_sharpen=1&resMode=sharp2&qlt=90"},
-        {brand:"KateSpade", productID:"pxru9257", image:"https://katespade.insnw.net/KateSpade/PXRU9257_242?$rr_large$"},
-        {brand:"Coach", productID:"31208", image:"https://img1.cohimg.net/is/image/Coach/31208_b4ru_a0?fmt=jpeg&wid=578&hei=727&bgc=240,240,240&qlt=85,0&op_sharpen=1&resMode=bicub&op_usm=0,0,0,0&iccEmbed=0&fit=hfit"},
-        {brand:"MK", productID:"30T8SXIL7T", image:"https://michaelkors.scene7.com/is/image/MichaelKors/30T8SXIL7T-1684_1?wid=997&hei=1344&op_sharpen=1&resMode=sharp2&qlt=90"},
-        {brand:"KateSpade", productID:"pxru9257", image:"https://katespade.insnw.net/KateSpade/PXRU9257_242?$rr_large$"}
 
-]*/
 
 // INDEX
 app.get("/products", function(req,res){
@@ -61,7 +30,7 @@ app.get("/products", function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render("index",{products:allProducts});
+            res.render("products/index",{products:allProducts});
         }
     });
 
@@ -92,21 +61,62 @@ app.post("/products",function(req, res){
 
 // NEW
 app.get("/products/new", function(req, res) {
-    res.render("new.ejs");
+    res.render("products/new");
 })
 
 // SHOW
 app.get("/products/:id", function(req,res){
     // find by ID
-    Product.findById(req.params.id, function(err, foundProduct){
+    Product.findById(req.params.id).populate("comments").exec(function(err, foundProduct){
         if(err){
             console.log(err);
         } else{
+            console.log(foundProduct);
             // render show template
-            res.render("show",{product: foundProduct});
+            res.render("products/show",{product: foundProduct});
         }
     });
-  
+});
+
+// COMMENTS 
+app.get("/products/:id/comments/new", function(req, res) {
+    // find by ID
+    Product.findById(req.params.id, function(err,product) {
+        if(err){
+            console.log(err);
+        } else{
+            res.render("comments/new",{product: product});
+        }
+    });
+});
+
+app.post("/products/:id/comments", function(req, res) {
+    // find by ID
+    Product.findById(req.params.id, function(err,product) {
+        if(err){
+            console.log(err);
+            res.redirect("/products");
+        } else{
+          console.log(req.body.comment);
+            // create new comment
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                } else {
+                    product.comments.push(comment);
+                    product.save();
+                    res.redirect('/products/' + product._id);
+                }
+                
+            });
+        }
+    });
+    
+    
+    
+    // connect new comment to product
+    
+    // redirect to product show page
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
