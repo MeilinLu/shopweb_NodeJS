@@ -28,7 +28,7 @@ app.use(require("express-session")({
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate())); // middleware
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -144,7 +144,6 @@ app.get("/register", function(req, res) {
     res.render("register");
 });
 
-// 
 app.post("/register", function(req, res) {
    // res.send("Register Processing....."); // testing
     var newUser = new User({username: req.body.username});
@@ -159,9 +158,25 @@ app.post("/register", function(req, res) {
     });
 });
 
+// Login Form
 
+app.get("/login", function(req, res) {
+    res.render("login");
+});
 
+/*app.post("/login",function(req, res) {
+    //res.send("Login Processing....."); // testing
+})*/
 
+// app.post("/login", middleware, callback) // logic
+
+app.post("/login", passport.authenticate("local",
+    {
+        successRedirect: "/products",
+        failureRedirect: "/login"
+    }), function(req, res){
+        
+});
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("This ShopTime Started V1 !");
