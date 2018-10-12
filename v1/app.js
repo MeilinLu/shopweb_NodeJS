@@ -25,6 +25,7 @@ app.use(require("express-session")({
     resave:false,
     saveUninitialized:false
 }));
+app.use(passport.initialize());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -32,7 +33,11 @@ passport.use(new LocalStrategy(User.authenticate())); // middleware
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+// With this function, we do not need to write {products:allProducts, currentUser: req.user}) all the time
+app.use(function(req, res, next){               // middleware
+    res.locals.currentUser = req.user;
+    next();
+});
 
 
 
@@ -46,11 +51,13 @@ app.get("/", function(req, res){
 
 // INDEX
 app.get("/products", function(req,res){
-    // Get all products from database
+    // console.log(req.user); // testing console before vs.after login
+    // Get All Products from Database
     Product.find({}, function(err,allProducts){
         if(err){
             console.log(err);
         } else {
+            
             res.render("products/index",{products:allProducts});
         }
     });
@@ -100,7 +107,7 @@ app.get("/products/:id", function(req,res){
 });
 
 // COMMENTS 
-app.get("/products/:id/comments/new", function(req, res) {
+app.get("/products/:id/comments/new",isLoggedIn, function(req, res) {
     // find by ID
     Product.findById(req.params.id, function(err,product) {
         if(err){
@@ -175,8 +182,21 @@ app.post("/login", passport.authenticate("local",
         successRedirect: "/products",
         failureRedirect: "/login"
     }), function(req, res){
-        
 });
+
+// Logout 
+
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/products");
+});
+
+function isLoggedIn(req,res,next){              // middleware
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("This ShopTime Started V1 !");
