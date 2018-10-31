@@ -9,8 +9,79 @@ body{
 
 .thumbnail{
     padding: 10px;
+    
+}
+
+.thumbnail {
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #CBCEF2;
+    border-radius: 4px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
 }
 
 .thumbnail .caption-full{
     padding: 15px;
+    
+}
+
+.jumbotron {
+    
+    background-image: url(http://glamshops.ro/pics/201303/seventh-heaven-departmental-store-by-mohamed-amer-bahrain-1363111064-0.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.container-fluid {
+    background-color: #D0D3F4;
+}
+
+.jumbotron .h1, .jumbotron h1 {
+    color: #755392;
+}
+
+.btn-group-lg>.btn, .btn-lg {
+    background-color: #755392;
+    color: #D0D3F4;
+}
+
+.bg-dark {
+    background-color: #CBCEF2!important;
+}
+
+
+.card {
+  height: 100%;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #755392;
+    border-color: #755392;
+}
+.card-footer {
+    padding: .75rem 1.25rem;
+    /*background-color: rgba(0,0,0,.03);*/
+    background-color: #CBCEF2;
+    /* border-top: 1px solid rgba(0,0,0,.125); */
+}
+.navbar-dark .navbar-brand {
+    color: #755392;
+}
+
+.navbar-dark .navbar-nav .active>.nav-link, .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .show>.nav-link {
+    color: #755392;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #755392;
+}
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color:white;
 }

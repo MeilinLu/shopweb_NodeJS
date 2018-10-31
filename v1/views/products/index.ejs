@@ -8,27 +8,26 @@
     <!-- Jumbotron Header -->
     <header class="jumbotron">
         <div class="container"></div>
-            <h1 class="display-3">Welcome to Shop Time !</h1>
-            <p class="lead">This is a shop plate for small business people communication.</p>
+            <h1 class="display-3"><strong>Welcome to Shop Time !</strong></h1>
+            <p class="lead"><strong>This is a shop plate for small business people communication.</strong></p>
             <a href="/products/new" class="btn btn-primary btn-lg">Post a New Product!</a>
         </div>
     </header>
     
     <div class="container">
-        <div class="row">
+        <div class="row" style="display:flex; flex-wrap: wrap;">
             <% products.forEach(function(product){ %>
                     
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="thumbnail">
-                       
-                            <img src="<%= product.image %>">
+                    <div class="card">
+                        <img class="card-img-top"  src="<%= product.image %>">
+                        <div class="card-body">
                             <h4><%= product.brand %></h4>
                             <h4><%= product.productID %></h4>
-                            <p>
-                                <a href="/products/<%= product._id %>" class="btn btn-primary">Show</a>
-                            </p>
-                     
-                        
+                        </div>
+                        <div class="card-footer">
+                            <a href="/products/<%= product._id %>" class="btn btn-primary">Show</a>
+                        </div>
                     </div>
                 </div>
             <% }); %>
