@@ -1,12 +1,12 @@
 var express = require("express");
-var router = express.Router();
+var router = express.Router({mergeParams: true});  // {mergeParams: true} solve for find :id
 var Product = require("../models/product");
 var Comment = require("../models/comment");
 
 
 
 // COMMENTS 
-router.get("/products/:id/comments/new",isLoggedIn, function(req, res) {
+router.get("/new",isLoggedIn, function(req, res) {
     // find by ID
     Product.findById(req.params.id, function(err,product) {
         if(err){
@@ -17,8 +17,9 @@ router.get("/products/:id/comments/new",isLoggedIn, function(req, res) {
     });
 });
 
-router.post("/products/:id/comments", function(req, res) {
+router.post("/", function(req, res) {
     // find by ID
+    console.log(req.param.id);    // solve error for <%= product.brand%> <%= product.productID %>
     Product.findById(req.params.id, function(err,product) {
         if(err){
             console.log(err);
