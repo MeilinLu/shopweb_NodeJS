@@ -18,15 +18,23 @@ router.get("/", function(req,res){
 });
 
 // Create a product
-router.post("/",function(req, res){
+router.post("/", isLoggedIn, function(req, res){
     //res.send("Submit Success!");  // testing
    // get data from form and add to products array
     var brand = req.body.brand;
     var productID = req.body.productID;
     var image = req.body.image;
     var description = req.body.description;
-    var newProduct = {brand: brand, productID: productID, image: image, description: description};
-  //products.push(newProduct); // Delete the hard code of productsjson
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    var newProduct = {brand: brand, productID: productID, image: image, description: description, author:author};
+    
+    // testing
+    //console.log(req.user);
+    
+    //products.push(newProduct); // Delete the hard code of productsjson
     
     // Create a new product and save to DB
     Product.create(newProduct, function(err, newCreated){
@@ -34,6 +42,7 @@ router.post("/",function(req, res){
            console.log(err);
        } else {
            // redirect back to products page
+           console.log(newCreated);
            res.redirect("/products");
        }
     });
@@ -41,7 +50,7 @@ router.post("/",function(req, res){
 });
 
 // New Product Form
-router.get("/new", function(req, res) {
+router.get("/new", isLoggedIn, function(req, res) {
     res.render("products/new");
 })
 
@@ -58,5 +67,14 @@ router.get("/:id", function(req,res){
         }
     });
 });
+
+// middleware
+function isLoggedIn(req,res,next){              
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
+
 
 module.exports = router;
