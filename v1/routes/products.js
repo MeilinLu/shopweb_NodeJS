@@ -69,20 +69,14 @@ router.get("/:id", function(req,res){
 });
 
 // Edit Product Route
-router.get("/:id/edit", function(req, res) {
-    //res.send("Edit Product Route");
+router.get("/:id/edit", checkProductOwnership, function(req, res) {
     Product.findById(req.params.id, function(err, foundProduct){
-        if(err) {
-            res.redirect("/products");
-        } else {
-            res.render("products/edit", {product: foundProduct});
-        }
+        res.render("products/edit", {product: foundProduct});
     });
-
 });
 
 // Update Product Route
-router.put("/:id", function(req,res){
+router.put("/:id", checkProductOwnership, function(req,res){
    // find and upate the correct product & // redirect show page
    Product.findByIdAndUpdate(req.params.id, req.body.product, function(err, updatedProduct){
       if(err) {
@@ -95,7 +89,7 @@ router.put("/:id", function(req,res){
 });
 
 // Destroy Product Route
-router.delete("/:id", function(req, res){
+router.delete("/:id", checkProductOwnership, function(req, res){
    // res.send("You are trying to delete");
    Product.findByIdAndRemove(req.params.id, function(err){
       if(err) {
@@ -114,5 +108,29 @@ function isLoggedIn(req,res,next){
     res.redirect("/login");
 }
 
+function checkProductOwnership(req, res, next){
+    if(req.isAuthenticated()){
+        Product.findById(req.params.id, function(err, foundProduct){
+            if(err) {
+                res.redirect("back");
+            } else {
+                // console.log(foundProduct.author.id );
+                // console.log(req.user._id);
+                // check if the user own the post
+                if(foundProduct.author.id.equals(req.user._id)){
+                    // res.render("products/edit", {product: foundProduct});
+                    next();
+                } else {
+                    // res.send("You do not have the permit to edit the product !");
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        // console.log("You need to login for authenticate");
+        // res.send("You need to login for authenticate");
+        res.redirect("back");
+    }
+}
 
 module.exports = router;

@@ -20,10 +20,12 @@
                     <p> 
                         <em>Posted by <%= product.author.username %></em>
                     </p>
+                    <% if(currentUser && product.author.id.equals(currentUser._id)){ %>
                     <a class="btn btn-xs btn-warning" href="/products/<%= product._id %>/edit">Edit</a>
                     <form id="delete-form" action="/products/<%= product._id %>?_method=DELETE" method="POST">
                         <button class="btn btn-xs btn-danger" >Delete</button>
                     </form>
+                    <% } %>
                 </div>
             </div>
             <div class="well">
