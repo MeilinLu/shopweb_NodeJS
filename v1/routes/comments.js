@@ -4,8 +4,7 @@ var Product = require("../models/product");
 var Comment = require("../models/comment");
 
 
-
-// COMMENTS 
+// Comments New
 router.get("/new",isLoggedIn, function(req, res) {
     // find by ID
     Product.findById(req.params.id, function(err,product) {
@@ -17,6 +16,7 @@ router.get("/new",isLoggedIn, function(req, res) {
     });
 });
 
+// Comments Create
 router.post("/", function(req, res) {
     // find by ID
     console.log(req.param.id);    // solve error for <%= product.brand%> <%= product.productID %>
@@ -33,8 +33,16 @@ router.post("/", function(req, res) {
                 if(err){
                     console.log(err);
                 } else {
+                    // add username and id to comment
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    // checking in console log
+                    // console.log("New comment's username will be: "+ req.user.username);
+                    // save comment
+                    comment.save();
                     product.comments.push(comment);
                     product.save();
+                    console.log(comment);
                     res.redirect('/products/' + product._id);
                 }
             });
@@ -42,7 +50,8 @@ router.post("/", function(req, res) {
     });
 });
 
-function isLoggedIn(req,res,next){              // middleware
+// middleware
+function isLoggedIn(req,res,next){              
     if(req.isAuthenticated()){
         return next();
     }

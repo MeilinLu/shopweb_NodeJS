@@ -26,38 +26,38 @@ function seedDB(){
     
     // Remove all products
     Product.remove({}, function(err) {
-        if(err){
-            console.log(err);
-        }
-        console.log("removed products !");
-    });
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     console.log("removed products !");
+    // });
    
-    // add a few products
-    data.forEach(function(seed){
-        Product.create(seed, function(err,product){
-            if(err){
-                console.log(err);
-            } else {
-                console.log("add a product");
+    // // add a few products
+    // data.forEach(function(seed){
+    //     Product.create(seed, function(err,product){
+    //         if(err){
+    //             console.log(err);
+    //         } else {
+    //             console.log("add a product");
                 
-                // create a comment
-                Comment.create(
-                    {
-                        text: "This is a nice design",
-                        author: "Meilin"
+    //             // create a comment
+    //             Comment.create(
+    //                 {
+    //                     text: "This is a nice design",
+    //                     author: "Meilin"
                     
-                    }, function(err, comment){
-                        if(err){
-                            console.log(err);
-                        } else {
-                            product.comments.push(comment);
-                            product.save();
-                            console.log("Create a new comment");
-                        }
-                    });
+    //                 }, function(err, comment){
+    //                     if(err){
+    //                         console.log(err);
+    //                     } else {
+    //                         product.comments.push(comment);
+    //                         product.save();
+    //                         console.log("Create a new comment");
+    //                     }
+    //                 });
                     
-            }
-        });
+    //         }
+    //     });
     });
    
 }

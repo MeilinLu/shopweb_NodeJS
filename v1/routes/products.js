@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Product = require("../models/product");
 
-// INDEX PRODUCTS
+// Index Products
 router.get("/", function(req,res){
     // console.log(req.user); // testing console before vs.after login
     // Get All Products from Database
@@ -17,7 +17,7 @@ router.get("/", function(req,res){
 
 });
 
-// CREATE
+// Create a product
 router.post("/",function(req, res){
     //res.send("Submit Success!");  // testing
    // get data from form and add to products array
@@ -40,12 +40,12 @@ router.post("/",function(req, res){
  
 });
 
-// NEW
+// New Product Form
 router.get("/new", function(req, res) {
     res.render("products/new");
 })
 
-// SHOW
+// Show Single Product
 router.get("/:id", function(req,res){
     // find by ID
     Product.findById(req.params.id).populate("comments").exec(function(err, foundProduct){

@@ -9,18 +9,18 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
 
+// Require Routes
 var commentRoutes = require("./routes/comments");
 var productRoutes = require("./routes/products");
 var indexRoutes = require("./routes/index");
 
-
-seedDB();
 mongoose.connect('mongodb://localhost:27017/shop_time', { useNewUrlParser: true }); //solve a DeprecationWarning //mongoose.connect("mongodb://localhost/shop_time");  
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-
+//seed the database
+// seedDB();
 
 // PASSPORT
 app.use(require("express-session")({
@@ -28,7 +28,6 @@ app.use(require("express-session")({
     resave:false,
     saveUninitialized:false
 }));
-app.use(passport.initialize());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -46,13 +45,6 @@ app.use(function(req, res, next){               // middleware
 app.use("/", indexRoutes);
 app.use("/products", productRoutes);
 app.use("/products/:id/comments", commentRoutes);
-
-
-// INDEX PRODUCT
-
-// COMMENTS 
-
-// AUTHENTICATION
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("This ShopTime Started V1 !");
