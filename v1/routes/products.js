@@ -68,6 +68,31 @@ router.get("/:id", function(req,res){
     });
 });
 
+// Edit Product Route
+router.get("/:id/edit", function(req, res) {
+    //res.send("Edit Product Route");
+    Product.findById(req.params.id, function(err, foundProduct){
+        if(err) {
+            res.redirect("/products");
+        } else {
+            res.render("products/edit", {product: foundProduct});
+        }
+    });
+
+});
+// Update Product Route
+router.put("/:id", function(req,res){
+   // find and upate the correct product & // redirect show page
+   Product.findByIdAndUpdate(req.params.id, req.body.product, function(err, updatedProduct){
+      if(err) {
+          res.redirect("/products");
+      } else {
+          res.redirect("/products/" + req.params.id);
+      }
+   });
+   
+});
+
 // middleware
 function isLoggedIn(req,res,next){              
     if(req.isAuthenticated()){

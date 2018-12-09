@@ -6,7 +6,6 @@ var productSchema = new mongoose.Schema({
     productID: String,
     image: String,
     description: String,
-    price: String,
     author: {
         id:{
             type: mongoose.Schema.Types.ObjectId,
