@@ -85,3 +85,7 @@ body{
     font-weight: 300;
     color:white;
 }
+
+#delete-form{
+    display: inline;
+}

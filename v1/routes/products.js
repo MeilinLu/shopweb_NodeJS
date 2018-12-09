@@ -80,6 +80,7 @@ router.get("/:id/edit", function(req, res) {
     });
 
 });
+
 // Update Product Route
 router.put("/:id", function(req,res){
    // find and upate the correct product & // redirect show page
@@ -91,6 +92,18 @@ router.put("/:id", function(req,res){
       }
    });
    
+});
+
+// Destroy Product Route
+router.delete("/:id", function(req, res){
+   // res.send("You are trying to delete");
+   Product.findByIdAndRemove(req.params.id, function(err){
+      if(err) {
+          res.redirect("/products");
+      } else {
+          res.redirect("/products");
+      }
+   });
 });
 
 // middleware

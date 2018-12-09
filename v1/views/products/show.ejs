@@ -20,8 +20,10 @@
                     <p> 
                         <em>Posted by <%= product.author.username %></em>
                     </p>
-                    <a class="btn btn-warning" href="/products/<%= product._id %>/edit">Edit</a>
-                    
+                    <a class="btn btn-xs btn-warning" href="/products/<%= product._id %>/edit">Edit</a>
+                    <form id="delete-form" action="/products/<%= product._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger" >Delete</button>
+                    </form>
                 </div>
             </div>
             <div class="well">
