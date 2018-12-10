@@ -41,6 +41,8 @@ passport.deserializeUser(User.deserializeUser());
 // With this function, we do not need to write {products:allProducts, currentUser: req.user}) all the time
 app.use(function(req, res, next){               // middleware
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

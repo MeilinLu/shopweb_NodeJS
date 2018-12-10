@@ -9,6 +9,7 @@ middlewareObj.checkProductOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Product.findById(req.params.id, function(err, foundProduct){
             if(err) {
+                req.flash("error", "Product Not Found!");
                 res.redirect("back");
             } else {
                 // console.log(foundProduct.author.id );
@@ -19,6 +20,7 @@ middlewareObj.checkProductOwnership = function(req, res, next){
                     next();
                 } else {
                     // res.send("You do not have the permit to edit the product !");
+                    req.flash("error", "No Permission!");
                     res.redirect("back");
                 }
             }
@@ -26,6 +28,7 @@ middlewareObj.checkProductOwnership = function(req, res, next){
     } else {
         // console.log("You need to login for authenticate");
         // res.send("You need to login for authenticate");
+        req.flash("error", "Please Login First!");
         res.redirect("back");
     }
 }
@@ -40,11 +43,13 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
                 if(foundComment.author.id.equals(req.user._id)){
                     next();
                 } else {
+                    req.flash("error", "No Permission!");
                     res.redirect("back");
                 }
             }
         });
     } else {
+        req.flash("error", "Please Login First!");
         res.redirect("back");
     }
 }

@@ -5,7 +5,7 @@ var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
 // Comments New
-router.get("/new",isLoggedIn, function(req, res) {
+router.get("/new", middleware.isLoggedIn, function(req, res) {
     // find by ID
     Product.findById(req.params.id, function(err,product) {
         if(err){
@@ -17,7 +17,7 @@ router.get("/new",isLoggedIn, function(req, res) {
 });
 
 // Comments Create
-router.post("/", function(req, res) {
+router.post("/", middleware.isLoggedIn, function(req, res) {
     // find by ID
     console.log(req.param.id);    // solve error for <%= product.brand%> <%= product.productID %>
     Product.findById(req.params.id, function(err,product) {
@@ -25,12 +25,13 @@ router.post("/", function(req, res) {
             console.log(err);
             res.redirect("/products");
         } else{
-          console.log(req.body.comment);
+            console.log(req.body.comment);
             // create new comment
             // connect new comment to product
             // redirect to product show page
             Comment.create(req.body.comment, function(err, comment){
                 if(err){
+                    req.flash("error", "Something went wrong!");
                     console.log(err);
                 } else {
                     // add username and id to comment
@@ -43,6 +44,7 @@ router.post("/", function(req, res) {
                     product.comments.push(comment);
                     product.save();
                     console.log(comment);
+                    req.flash("success", "Successfully Create A Comment!");
                     res.redirect('/products/' + product._id);
                 }
             });
@@ -69,6 +71,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
         if(err) {
             res.redirect("back");
         } else {
+            req.flash("success", "Comment Delete!");
             res.redirect("/products/" + req.params.id);
         }
     });
@@ -86,15 +89,6 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
       }
    });
 });
-
-
-// middleware
-function isLoggedIn(req,res,next){              
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 
 module.exports = router;

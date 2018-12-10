@@ -32,7 +32,6 @@
                 <a class="nav-link" href="/register">Register</a>
               </li>
             <% } else { %>
-              
               <li class="nav-item">
                 <a class="nav-link" id="welcome_user" href="#">Welcome, <strong><%=currentUser.username %></strong></a>
               </li>
@@ -47,4 +46,17 @@
     <br>
     <br>
     <br>
+    <div class="container">
+      <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger" role="alert">
+          <%= error %>
+        </div>
+      <% } %>
+      <% if(success && success.length > 0){ %>
+        <div class="alert alert-success" role="alert">
+          <%= success %>
+        </div>
+      <% } %>
+    </div>
+    
     
